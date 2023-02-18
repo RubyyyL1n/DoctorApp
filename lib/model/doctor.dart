@@ -85,14 +85,14 @@ class DoctorMenu {
 }
 
 var doctorMenu = [
-  DoctorMenu(name: 'Consultation', image: 'img-consultation.svg'),
-  DoctorMenu(name: 'Dental', image: 'img-dental.svg'),
-  DoctorMenu(name: 'Heart', image: 'img-heart.svg'),
-  DoctorMenu(name: 'Hospitals', image: 'img-hospital.svg'),
-  DoctorMenu(name: 'Medicines', image: 'img-medicine.svg'),
-  DoctorMenu(name: 'Physician', image: 'img-physician.svg'),
-  DoctorMenu(name: 'Skin', image: 'img-skin.svg'),
-  DoctorMenu(name: 'Surgeon', image: 'img-surgeon.svg'),
+  DoctorMenu(name: 'Consultation', image: 'img-consultation.svg',),
+  DoctorMenu(name: 'Dental', image: 'img-dental.svg',),
+  DoctorMenu(name: 'Heart', image: 'img-heart.svg',),
+  DoctorMenu(name: 'Hospitals', image: 'img-hospital.svg',),
+  DoctorMenu(name: 'Medicines', image: 'img-medicine.svg',),
+  DoctorMenu(name: 'Physician', image: 'img-physician.svg',),
+  DoctorMenu(name: 'Skin', image: 'img-skin.svg',),
+  DoctorMenu(name: 'Surgeon', image: 'img-surgeon.svg',),
 ];
 
 

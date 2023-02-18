@@ -28,7 +28,10 @@ class TestPage extends StatelessWidget {
           ),
           ElevatedButton.icon(
             style: ElevatedButton.styleFrom(minimumSize: Size.fromHeight(50)),
-            onPressed: () => FirebaseAuth.instance.signOut(), 
+            onPressed: () {
+              FirebaseAuth.instance.signOut();
+              Navigator.of(context).popAndPushNamed('signin');
+              },
             icon: Icon(Icons.arrow_back, size: 32,), 
             label: Text('Sign out', style: TextStyle(fontSize: 24),))
         ]),

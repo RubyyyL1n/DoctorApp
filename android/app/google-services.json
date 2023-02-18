@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "671368558261",
-    "project_id": "doctor-appointment-7083c",
-    "storage_bucket": "doctor-appointment-7083c.appspot.com"
+    "project_number": "354940577737",
+    "project_id": "doctor-app-v1",
+    "storage_bucket": "doctor-app-v1.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:671368558261:android:b4ed4b4f1531ee455a30fc",
+        "mobilesdk_app_id": "1:354940577737:android:6ae172220bd0e957776a18",
         "android_client_info": {
           "package_name": "com.example.sqq_flutter2"
         }
       },
       "oauth_client": [
         {
-          "client_id": "671368558261-ra6p5apr65ideva47jlbnp0l04g7j761.apps.googleusercontent.com",
+          "client_id": "354940577737-pce7qerp866hpftm8thfdae75vo11se5.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCEGIJcMycSZYg8utdbaZBe-GP-jyHIZbI"
+          "current_key": "AIzaSyCTsWaOn1wApIpeOKL2gU60zdNLcg49gc4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "671368558261-ra6p5apr65ideva47jlbnp0l04g7j761.apps.googleusercontent.com",
+              "client_id": "354940577737-pce7qerp866hpftm8thfdae75vo11se5.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

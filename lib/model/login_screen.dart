@@ -2,12 +2,11 @@ import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
 import 'package:sqq_flutter2/constants.dart';
 import 'package:sqq_flutter2/main.dart';
+import 'package:sqq_flutter2/model/set_profile.dart';
 import 'package:sqq_flutter2/model/signin.dart';
-
 import '../components/signup_error.dart';
 
 class AuthPage extends StatefulWidget {
@@ -106,59 +105,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
           ),
 
           const SizedBox(height: 10),
-              Row(
-                children: [
-                Padding(padding: EdgeInsets.only(left: 60)),
-                Container(
-                  width: 300,
-                  height: 24,
-                  child: 
-                TextField(
-                  //autofocus: true,
-                  controller: _userAccountController,
-                  decoration: InputDecoration(
-                    labelText: 'Account', 
-                    //border: OutlineInputBorder(),
-                    //hintText: 'Input your account',
-                    prefixIcon: Padding(padding: EdgeInsets.zero, child: Container(
-                      height: 24,
-                      width: 24,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: Svg('asset/signup/img-account.svg', size: Size(24,24))),
-                    ),)
-                  ),
-                )
-                ),
-                ),
-                SizedBox(height: 65,),
-                
-              ],),
-
-              Row(
-                children: [
-                Padding(padding: EdgeInsets.only(left: 60)),
-                Container(
-                  width: 300,
-                  height: 24,
-                  child: 
-                TextField(
-                  //autofocus: true,
-                  controller: _userMobileController,
-                  decoration: InputDecoration(
-                    labelText: 'Mobile Number', 
-                    //border: OutlineInputBorder(),
-                    //hintText: 'Input your account',
-                    prefixIcon: Padding(padding: EdgeInsets.zero, child: Container(
-                      height: 27,
-                      width: 24,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: Svg('asset/signup/img-mobile.svg', size: Size(24,24))),
-                    ),)
-                  ),
-                )
-                ),
-                ),
-                SizedBox(height: 65,),
-                
-              ],),
 
               Row(
                 children: [
@@ -187,7 +133,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                         email != null && !EmailValidator.validate(email) ? 'Enter a valid email' : null,
                 ),
                 ),
-                SizedBox(height: 65,),
+                SizedBox(height: 75,),
                 
               ],),
 
@@ -201,7 +147,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   controller: _userPaswordController,
-                  obscureText: passwordVisible,
+                  obscureText: !passwordVisible,
                   decoration: InputDecoration(
                     labelText: 'Password', 
                     //border: OutlineInputBorder(),
@@ -229,7 +175,37 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 validator: (value) => value != null && value.length < 6 ? 'Enter min. 6 characters' : null,
                 ),
                 ),
-                const SizedBox(height: 65,),
+                const SizedBox(height: 45,),
+                ],),
+
+          Row(
+                children: [
+                Padding(padding: EdgeInsets.only(left: 60)),
+                Container(
+                  width: 300,
+                  height: 24,
+                  child: 
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Double Check', 
+                    //border: OutlineInputBorder(),
+                    //hintText: 'Input your account',
+                      prefixIcon: Padding(padding: EdgeInsets.zero, child: Container(
+                      height: 24,
+                      width: 24,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: DecorationImage(image: Svg('asset/signup/img-passwd.svg', size: Size(24,24))),
+                      
+                    ),
+                    ),
+                  ),
+                ),
+                autovalidateMode:AutovalidateMode.onUserInteraction,
+                validator: (value) => value != null && value != _userPaswordController.text ? 'Password incorrect' : null,
+                ),
+                ),
+                const SizedBox(height: 115,),
                 ],),
               Row(
               children: [
@@ -242,7 +218,6 @@ class _SignUpWidgetState extends State<SignUpWidget> {
                 ]
 
           ),
-          const SizedBox(height: 50,),
 
               Row(children: [
                 Padding(padding: EdgeInsets.only(left: 30)),
@@ -299,7 +274,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
 
     final isValid = formKey.currentState!.validate();
     if (!isValid) return;
-
+    Profile profile = Profile();
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -313,7 +288,7 @@ class _SignUpWidgetState extends State<SignUpWidget> {
   Utils.showSnackBar(e.message);
   // TODO
 }
-
+profile.setUser(_userEmailController.text);
 navigatorKey.currentState!.popUntil((route) => route.isFirst);
 }
 }

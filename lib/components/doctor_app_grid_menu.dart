@@ -15,6 +15,9 @@ class DoctorAppGridMenu extends StatelessWidget {
       itemCount: doctorMenu.length,
       itemBuilder: (BuildContext context, index){
         return GestureDetector(
+          onTap: () {
+            Navigator.of(context).pushNamed(doctorMenu[index].name);
+          },
           child: Container(
             constraints: const BoxConstraints(
               maxHeight: 81,

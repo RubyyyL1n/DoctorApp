@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg_provider/flutter_svg_provider.dart';
+import 'package:sqq_flutter2/components/email_verify.dart';
 import 'package:sqq_flutter2/constants.dart';
+import 'package:sqq_flutter2/model/Reset_Password.dart';
+import 'package:sqq_flutter2/model/admin_home_page.dart';
 import 'package:sqq_flutter2/model/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sqq_flutter2/model/test.dart';
-
 import '../components/signup_error.dart';
 import '../main.dart';
 
@@ -20,13 +22,13 @@ class SignInPage extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if(snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator(),);
+          return const Center(child: CircularProgressIndicator(),);
         }else if(snapshot.hasError) {
-          return Center(child: Text("Error"),);
+          return const Center(child: Text("Error"),);
         }else if(snapshot.hasData){
-          return TestPage();
+          return const VerifyEmailPage();
         }else{
-          return AuthPage();
+          return const AuthPage();
         }
       },
     )
@@ -41,16 +43,19 @@ class LoginWidget extends StatefulWidget {
 
   const LoginWidget({Key? key, required this.onClickedSignUp}) : super(key: key);
 
+
   @override
   State<LoginWidget> createState() => _LoginWidgetState();
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
   
+  // ignore: prefer_typing_uninitialized_variables
   var passwordVisible;
   late String initText;
   final _paswordController = TextEditingController();
   final _emailController = TextEditingController();
+  final _adminCodeController = TextEditingController();
 
 @override
   void initState() {
@@ -63,6 +68,7 @@ class _LoginWidgetState extends State<LoginWidget> {
     super.dispose();
     _paswordController.dispose();
     _emailController.dispose();
+    _adminCodeController.dispose();
   }
 
   @override
@@ -157,7 +163,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                 TextFormField(
                   keyboardType: TextInputType.text,
                   controller: _paswordController,
-                  obscureText: passwordVisible,
+                  obscureText: !passwordVisible,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
                     //labelText: 'Password', 
@@ -187,23 +193,61 @@ class _LoginWidgetState extends State<LoginWidget> {
                 ),
                 const SizedBox(height: 65,),
                 ],),
+
+                Row(
+                children: [
+                Padding(padding: EdgeInsets.only(left: 60)),
+                Container(
+                  width: 300,
+                  height: 24,
+                  child: 
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  controller: _adminCodeController,
+                  obscureText: true,
+                  textInputAction: TextInputAction.done,
+                  decoration: InputDecoration(
+                    //labelText: 'Password', 
+                    //border: OutlineInputBorder(),
+                    hintText: 'admin code, for doctor only',
+                      prefixIcon: Padding(padding: EdgeInsets.zero, child: Container(
+                      height: 24,
+                      width: 24,
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), image: const DecorationImage(image: Svg('asset/signup/img-account.svg', size: Size(24,24))),
+                      
+                    ),)
+                  ),
+                ),
+                ),
+                ),
+                const SizedBox(height: 65,),
+                ],),
+
               Row(
               children: [
                 const Padding(padding: EdgeInsets.only(right:120)),
-                Text(
+                GestureDetector(
+                  child: Text(
                 'Forget your password?',
-                style: Theme.of(context).textTheme.bodyText1?.copyWith(color: kBlackColor800, fontSize: 15),
+                style: TextStyle(
+                decoration: TextDecoration.underline,
+                color: kBlackColor800,
+                fontSize: 15,
+                ),
                 textAlign: TextAlign.end,
                 ),
-                ]
-
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: ((context) => ForgotPasswordPage())),
+                
+                 ), ),
+              ]
           ),
+
           const SizedBox(height: 50,),
 
               Row(children: [
                 const Padding(padding: EdgeInsets.only(left: 30)),
                 GestureDetector(
-                  onTap: signIn,
+                  onTap: () => signIn(),
                   child: Container(
                     padding: EdgeInsets.only(top: 10),
                   height: 60,
@@ -249,42 +293,25 @@ class _LoginWidgetState extends State<LoginWidget> {
       ,),);
 
   }
-  Future signIn() async {
+  void signIn() async {
+    //final admin = FirebaseFirestore.instance.collection('DoctorID').doc('doctorID');
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => Center(child: CircularProgressIndicator(),));
+      builder: (context) =>const Center(child: CircularProgressIndicator(),));
   try {
   await FirebaseAuth.instance.signInWithEmailAndPassword(
     email: _emailController.text.trim(), 
-    password: _paswordController.text.trim());
-} on FirebaseAuthException catch (e) {
+    password: _paswordController.text.trim()
+    );
+}
+on FirebaseAuthException catch (e) {
   print(e);
   Utils.showSnackBar(e.message);
   // TODO
 }
 
-navigatorKey.currentState!.popUntil((route) => route.isFirst);
+ navigatorKey.currentState!.popUntil((route) => route.isFirst);
 
-  }
 }
-
-
-// Route _createRoute() {
-//   return PageRouteBuilder(
-//     pageBuilder: (context, animation, secondaryAnimation) => const AuthPage(),
-//     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-//       const begin = Offset(0.0, 1.0);
-//       const end = Offset.zero;
-//       const curve = Curves.ease;
-
-//       var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-//       return SlideTransition(
-//         position: animation.drive(tween),
-//         child: child,
-//       );
-//     },
-//   );
-// }
-
+}

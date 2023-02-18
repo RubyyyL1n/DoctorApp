@@ -1,12 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sqq_flutter2/constants.dart';
-import 'package:sqq_flutter2/model/doctors.dart';
+
 
 class TopDoctorsCard extends StatelessWidget {
-  const TopDoctorsCard({super.key, this.doctor});
+  const TopDoctorsCard({super.key, required this.snap, required this.index});
 
-  final Doctor? doctor;
+  final List<QueryDocumentSnapshot<Object?>> snap;
+  final index;
 
   @override
   Widget build(BuildContext context) {
@@ -22,28 +24,28 @@ class TopDoctorsCard extends StatelessWidget {
             Container(
               width: 88,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: AssetImage('asset/images/${doctor!.doctorPicture}'))
+                  borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('asset/images/${snap[index]['doctorPicture']}'))
               ),
             ),
             const SizedBox(width: 16,),
             Flexible(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    doctor!.doctorName,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: Theme.of(context).textTheme.headline4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      snap[index]['doctorName'],
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.headline4,
                     ),
                     Text(
-                    '${doctor!.doctorSpecialty} ・ ${doctor!.doctorHospital}',
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: Theme.of(context).textTheme.headline5,
+                      '${snap[index]['doctorSpecialty']} ・ ${snap[index]['doctorHospital']}',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.headline5,
                     ),
                     const Spacer(),
 
@@ -53,52 +55,52 @@ class TopDoctorsCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Row(
-                            children: [
-                              RatingBar.builder(
-                                itemSize: 16,
-                                initialRating: doctor!.doctorRating,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                itemCount: 5,
-                                itemPadding: EdgeInsets.zero,
-                                // ignore: avoid_types_as_parameter_names
-                                itemBuilder:(context, Null) => const Icon(
-                                  Icons.star,
-                                  color: kYellowColor,
+                              children: [
+                                RatingBar.builder(
+                                  itemSize: 16,
+                                  initialRating: snap[index]['doctorRating'],
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  itemCount: 5,
+                                  itemPadding: EdgeInsets.zero,
+                                  // ignore: avoid_types_as_parameter_names
+                                  itemBuilder:(context, Null) => const Icon(
+                                    Icons.star,
+                                    color: kYellowColor,
+                                  ),
+                                  onRatingUpdate: (rating) {
+                                    debugPrint(rating.toString());
+                                  },
+                                  unratedColor: kGreyColor600,
                                 ),
-                                onRatingUpdate: (rating) {
-                                  debugPrint(rating.toString());
-                                },
-                                unratedColor: kGreyColor600,
-                              ),
 
-                              const SizedBox(width: 4,),
+                                const SizedBox(width: 4,),
 
-                              Text(
-                                '(${doctor!.doctorNumberOfPatient})', 
-                                style: Theme.of(context).textTheme.bodyText2)
+                                Text(
+                                    '(${snap[index]['doctorNumberOfPatient']})',
+                                    style: Theme.of(context).textTheme.bodyText2)
 
-                            ]),
-                            Container(
-                          height: 24,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 13,
-                            vertical: 3
+                              ]),
+                          Container(
+                            height: 24,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 13,
+                                vertical: 3
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: snap[index]['doctorIsOpen']?kGreenLightColor:kRedLightColor,
+                            ),
+                            child: Text(
+                              snap[index]['doctorIsOpen']?'Open':'Close',
+                              style: Theme.of(context).textTheme.headline6!.copyWith(color: snap[index]['doctorIsOpen']?kGreenColor:kRedColor),
+                            ),
                           ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: doctor!.doctorIsOpen?kGreenLightColor:kRedLightColor,
-                          ),
-                          child: Text(
-                            doctor!.doctorIsOpen?'Open':'Close',
-                            style: Theme.of(context).textTheme.headline6!.copyWith(color: doctor!.doctorIsOpen?kGreenColor:kRedColor),
-                          ),
-                        ),
                         ],
                       ),
-                        ), //88+32+16
-                ],
-              )),
+                    ), //88+32+16
+                  ],
+                )),
           ],),
       ),
     );

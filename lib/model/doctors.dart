@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'doctor.dart';
 
@@ -13,7 +11,8 @@ class Doctor{
       this.doctorYearOfExperience = '',
       this.doctorDescription = '',
       this.doctorPicture = '',
-      this.doctorIsOpen = false});
+      this.doctorIsOpen = false,
+      this.isBeenSelect = false});
 
   String doctorName;
   String doctorSpecialty;
@@ -24,6 +23,7 @@ class Doctor{
   String doctorDescription;
   String doctorPicture;
   bool doctorIsOpen;
+  bool isBeenSelect;
 
   
   Map<String, dynamic> ToFirestore() => {
@@ -51,6 +51,7 @@ class Doctor{
     doctorYearOfExperience: data?['doctorYearOfExperience'],
     doctorRating: data?['doctorRating'],
     doctorSpecialty: data?['doctorSpecialty'],
+
     );
 }
     setter(Doctor temp) => {
@@ -70,12 +71,12 @@ class Doctor{
 
 Future createDoctor({required int index, required Doctor doctor}) async {
   final docUser = FirebaseFirestore.instance.collection('Doctors').doc('Doctor_$index');
-
   docUser.set(doctor.ToFirestore());
 
   }
 
 //Generate doctor database
+  // ignore: non_constant_identifier_names
   void GenerateDoctorDatabase() {
   for(var i = 0; i < topDoctors.length; i++) {
     createDoctor(index: i+1, doctor: topDoctors[i]);

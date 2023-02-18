@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqq_flutter2/components/top_doctor_list.dart';
 import 'package:sqq_flutter2/constants.dart';
-import 'package:sqq_flutter2/doctor_app_theme.dart';
 import 'components/doctor_app_grid_menu.dart';
 import 'components/home_screen_navbar.dart';
 

@@ -8,46 +8,46 @@ class TopDoctorList extends StatelessWidget {
   const TopDoctorList({super.key});
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: topDoctors.length,
-      itemBuilder: (context, index) {
-        Doctor doc = Doctor();
-        _readDoctor(index+1, doc);
-        return GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamed('doctor_details', arguments: Doctor(
-              doctorName: doc.doctorName,
-              doctorDescription: doc.doctorDescription,
-              doctorHospital: doc.doctorHospital,
-              doctorIsOpen: doc.doctorIsOpen,
-              doctorNumberOfPatient: doc.doctorNumberOfPatient,
-              doctorPicture: doc.doctorPicture,
-              doctorRating: doc.doctorRating,
-              doctorSpecialty: doc.doctorSpecialty,
-              doctorYearOfExperience: doc.doctorYearOfExperience,
-            ));
-          },
-          
-          child: TopDoctorsCard(
-            doctor: topDoctors[index],
-          ),
-        );
-      },
+    final ref = FirebaseFirestore.instance.collection('Doctors');
+    return StreamBuilder<QuerySnapshot>(
+        stream: ref.snapshots(),
+        builder: (context, snapshot) {
+          if(snapshot.hasData) {
+            final snap = snapshot.data!.docs;
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: snap.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed('doctor_details', arguments: Doctor(
+                      doctorName: snap[index]['doctorName'],
+                      doctorDescription: snap[index]['doctorDescription'],
+                      doctorHospital: snap[index]['doctorHospital'],
+                      doctorIsOpen: snap[index]['doctorIsOpen'],
+                      doctorNumberOfPatient: snap[index]['doctorNumberOfPatient'],
+                      doctorPicture: snap[index]['doctorPicture'],
+                      doctorRating: snap[index]['doctorRating'],
+                      doctorSpecialty: snap[index]['doctorSpecialty'],
+                      doctorYearOfExperience: snap[index]['doctorYearOfExperience'],
+                    ));
+                  },
+
+                  child: TopDoctorsCard(
+                    snap: snap,
+                    index: index,
+                  ),
+                );
+              },
+            );
+          }
+          else if(snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator(),);
+          }
+          else {
+            return const SizedBox();
+          }
+        }
     );
   }
-}
-
-//Read data from database
- void _readDoctor(var index, Doctor doc) async{
-  final ref = FirebaseFirestore.instance.collection('Doctors').doc('Doctor_$index').withConverter(
-    fromFirestore: Doctor.fromFirestore, toFirestore: (Doctor doctor, Null) => doctor.ToFirestore(),);
-    final docSnap = await ref.get();
-    final temp = docSnap.data();
-    if (temp != null){
-      doc.setter(temp);
-    }
-    else {
-      print("No such document");
-    }
 }
