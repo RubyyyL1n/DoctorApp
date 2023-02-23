@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sqq_flutter2/components/top_doctor_list.dart';
 import 'package:sqq_flutter2/constants.dart';
+import 'package:sqq_flutter2/model/show_all_doctors.dart';
 import 'components/doctor_app_grid_menu.dart';
 import 'components/home_screen_navbar.dart';
 
@@ -78,11 +79,16 @@ class HomeScreen extends StatelessWidget {
                         'Top Doctors',
                          style: Theme.of(context).textTheme.headline3,
                       ),
-                      Text(
-                        'View all',
-                         style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                          color: kBlueColor,
-                         )
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ViewAll()));
+                        },
+                        child: Text(
+                          'View all',
+                           style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                            color: kBlueColor,
+                           )
+                        ),
                       ),
                   ],
                   ),

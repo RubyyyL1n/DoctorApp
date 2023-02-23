@@ -154,24 +154,46 @@ class _PatientDetailState extends State<PatientDetail> {
                 ),
               ),
               SizedBox(height: 30,),
+              // ElevatedButton(
+              // onPressed: () {
+              //   context.read<SummaryData>().assignPatient(nameController.text, genderController.text, emailController.text, _controller.text);
+              //   Navigator.push(
+              //     context,
+              //     MaterialPageRoute(builder: ((context) => ReviewSummary())),
+              //   );
+              // },
+              // child: Center(
+              //   child: Text(
+              //     'Next',
+              //     style: TextStyle(color: kWhiteColor, fontSize: 16, fontWeight: FontWeight.w200),
+              //   ),),
+              // style: ElevatedButton.styleFrom(
+              //   backgroundColor: kBlueColor,
+              //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+              // ),
+              //   )
               ElevatedButton(
-              onPressed: () {
-                context.read<SummaryData>().assignPatient(nameController.text, genderController.text, emailController.text, _controller.text);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: ((context) => ReviewSummary())),
-                );
-              }, 
-              child: Center(
-                child: Text(
-                  'Next',
-                  style: TextStyle(color: kWhiteColor, fontSize: 16, fontWeight: FontWeight.w200),
-                ),),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: kBlueColor,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-              ),
-                )
+                onPressed: () {
+                  context.read<SummaryData>().assignPatient(
+                      nameController.text.isEmpty ? widget.userName : nameController.text,
+                      widget.userEmail,
+                      genderController.text.isEmpty ? widget.userGender : genderController.text,
+                      _controller.text);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: ((context) => ReviewSummary())),
+                  );
+                },
+                child: Center(
+                  child: Text(
+                    'Next',
+                    style: TextStyle(color: kWhiteColor, fontSize: 16, fontWeight: FontWeight.w200),
+                  ),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kBlueColor,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                ),
+              )
             ],
             ),
         ),
